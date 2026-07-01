@@ -1,0 +1,253 @@
+/* Importing fonts */
+@font-face {
+    font-family: "Anurati";
+    src: url("../assets/fonts/Anurati.otf") format("opentype");
+}
+@font-face {
+    font-family: "Quicksand";
+    src: url("../assets/fonts/Quicksand.otf") format("opentype");
+}
+
+/* Saving some callings */
+:root {
+    --c-text: rgba(128, 128, 128, 0.5);
+    --c-text-hover: rgba(0, 0, 0, 0.5);
+    --c-text-todo-completed: rgba(128, 128, 128, 0);
+    --c-line: rgba(128, 128, 128, 0.35);
+    --c-line-hover: rgba(128, 128, 128, 0.6);
+    --c-shadow: rgba(0, 0, 0, 0.3);
+    --c-completed: rgba(128, 128, 128, 0.3);
+    --c-no-transparent: rgba(128, 128, 128, 0.9);
+}
+
+/* Body Part */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+html,
+body {
+    background: #111;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+}
+
+/* Draggable widgets! :D */
+.container,
+.todo-wrapper {
+    position: absolute;
+    user-select: none;
+    touch-action: none;
+    opacity: 0;
+    transition: opacity 0.35s ease-in-out;
+}
+
+.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+    cursor: move;
+}
+
+.is-locked {
+    pointer-events: none;
+}
+
+.is-locked input,
+.is-locked textarea,
+.is-locked button,
+.is-locked select,
+.is-locked .add-btn,
+.is-locked .done-btn,
+.is-locked .del-btn {
+    pointer-events: auto;
+}
+
+/* Clock Part */
+.glass {
+    background: transparent;
+    backdrop-filter: blur(5px);
+    border: 0.8px solid var(--c-line);
+}
+
+.container {
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    color: var(--c-text);
+    text-transform: uppercase;
+    padding-top: 0.5rem;
+}
+.day {
+    font-family: "Anurati", sans-serif;
+    font-size: 55px;
+    letter-spacing: 0.3em;
+}
+.date,
+.time {
+    font-family: "Quicksand", sans-serif;
+    font-size: 20px;
+    letter-spacing: 0.15em;
+    margin-top: 10px;
+}
+
+/* To-Do List Box */
+.todo-wrapper {
+    left: 67%;
+    top: 160px;
+    width: 440px;
+}
+.input-group {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+#todoInput {
+    flex-grow: 1;
+    color: var(--c-text);
+    padding: 8px;
+    outline: none;
+    font-family: "Quicksand", sans-serif;
+    border-radius: 1rem;
+}
+
+#todoList {
+    max-height: 144px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 3px;
+}
+
+#todoList::-webkit-scrollbar {
+    width: 6px;
+}
+
+#todoList::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#todoList::-webkit-scrollbar-thumb {
+    background: var(--c-line);
+    border-radius: 999px;
+    transition: background 0.2s ease;
+}
+
+#todoList::-webkit-scrollbar-thumb:hover {
+    background: var(--c-line-hover);
+}
+.add-btn {
+    padding: 8px 12px;
+    color: var(--c-text);
+    cursor: pointer;
+    font-family: "Quicksand", sans-serif;
+    border-radius: 1rem;
+    transition: all 0.2s ease;
+}
+
+.add-btn:hover {
+    background: var(--c-line);
+    color: var(--c-text-hover);
+    box-shadow: 0 5px 15px var(--c-shadow);
+}
+
+ul {
+    list-style: none;
+}
+li {
+    padding: 4px 12px;
+    border: 1px solid var(--c-line);
+    margin-bottom: 4px;
+    display: flex;
+    justify-content: space-between;
+    font-family: "Quicksand", sans-serif;
+    color: var(--c-text);
+    border-radius: 1rem;
+    animation: fadeIn 0.35s ease;
+    transition:
+        opacity 0.35s ease,
+        transform 0.35s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.actions {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.task-text {
+    flex: 1;
+    word-break: break-word;
+    margin-right: 10px;
+    transition: all 0.35s ease;
+    text-decoration: line-through 0px var(--c-text-todo-completed);
+}
+
+.done-btn,
+.del-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    cursor: pointer;
+    color: var(--c-line);
+    font-size: 1.2rem;
+    transition: color 0.2s ease;
+}
+
+.done-btn:hover,
+.del-btn:hover {
+    color: var(--c-text-hover);
+    background: var(--c-line);
+}
+
+.completed {
+    text-decoration: line-through 1.5px var(--c-text);
+    opacity: 0.5;
+    color: var(--c-completed);
+}
+
+/* "Editing widgets..." popup */
+#edit-popup {
+    position: fixed;
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px 18px;
+    font-family: "Quicksand", sans-serif;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 999px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    pointer-events: none;
+    transition:
+        opacity 0.25s ease,
+        transform 0.25s ease;
+    z-index: 9999;
+}
+
+#edit-popup.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(5px);
+}
