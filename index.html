@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>HUD</title>
+        <link rel="stylesheet" href="css/script.css"></link>
+    </head>
+    <body>
+        <div class="container">
+            <div class="day" id="day">MONDAY</div>
+            <div class="date" id="date">29 JUNE, 2026.</div>
+            <div class="time" id="time">- 21:02 -</div>
+        </div>
+        <div class="todo-wrapper">
+            <div class="input-group">
+                <input
+                    type="text"
+                    id="todoInput"
+                    class="glass"
+                    placeholder="Task goes here..."
+                />
+                <button class="glass add-btn" onclick="addTask()">ADD</button>
+            </div>
+            <ul id="todoList"></ul>
+        </div>
+        <div id="edit-popup">Editing widgets...</div>
+
+        <script src="js/clock-widget.js"></script>
+        <script src="js/todo-widget.js"></script>
+        <script src="js/move-widget.js"></script>
+    </body>
+</html>
