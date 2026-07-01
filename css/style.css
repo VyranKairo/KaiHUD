@@ -1,11 +1,11 @@
 /* Importing fonts */
 @font-face {
     font-family: "Anurati";
-    src: url("../assets/fonts/Anurati.otf") format("opentype");
+    src: url("../assets/Anurati.otf") format("opentype");
 }
 @font-face {
     font-family: "Quicksand";
-    src: url("../assets/fonts/Quicksand.otf") format("opentype");
+    src: url("../assets/Quicksand.otf") format("opentype");
 }
 
 /* Saving some callings */
