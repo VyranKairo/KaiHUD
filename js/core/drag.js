@@ -3,18 +3,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const widgets = [
     { id: "container", el: document.querySelector(".container") },
     { id: "todo-wrapper", el: document.querySelector(".todo-wrapper") },
+    { id: "calendar-wrapper", el: document.querySelector(".calendar-wrapper") },
   ];
 
-  // FIXED: Default to true so widgets are locked on page load
   let isLocked = true;
 
-  // Apply initial locked state to UI
   widgets.forEach((w) => {
     w.el.classList.add("is-locked");
   });
 
-  // Hotkey Ctrl + Alt + E to toggle Edit Mode
-  document.addEventListener("keydown", (e) => {
+  document.addEventListener("keydown", async (e) => {
     if (e.ctrlKey && e.altKey && e.key.toLowerCase() === "e") {
       e.preventDefault();
       isLocked = !isLocked;
@@ -23,30 +21,43 @@ document.addEventListener("DOMContentLoaded", () => {
         w.el.classList.toggle("is-locked", isLocked);
       });
 
+      document.querySelectorAll(".custom-widget").forEach((w) => {
+        w.classList.toggle("is-locked", isLocked);
+      });
+
       if (editPopup) {
-        // Show popup when we are in edit mode (isLocked is false)
         editPopup.classList.toggle("show", !isLocked);
       }
+
+      document.dispatchEvent(
+        new CustomEvent("editModeToggled", {
+          detail: { isActive: !isLocked },
+        }),
+      );
 
       console.log("Edit Mode Active:", !isLocked);
     }
   });
 
-  // Initialize positions ONLY if they haven't been moved before
   if (!localStorage.getItem("container")) {
     const container = widgets[0].el;
-    container.style.top = "5px";
+    container.style.top = "1%";
     container.style.left = "50%";
     container.style.transform = "translateX(-50%)";
   }
 
   if (!localStorage.getItem("todo-wrapper")) {
     const todoWrapper = widgets[1].el;
-    todoWrapper.style.top = "150px";
-    todoWrapper.style.left = "67%";
+    todoWrapper.style.top = "15%";
+    todoWrapper.style.right = "2%";
   }
 
-  // Load saved positions
+  if (!localStorage.getItem("calendar-wrapper")) {
+    const todoWrapper = widgets[2].el;
+    todoWrapper.style.top = "15%";
+    todoWrapper.style.left = "2%";
+  }
+
   widgets.forEach((w) => {
     const savedPos = JSON.parse(localStorage.getItem(w.id));
     if (savedPos) {
@@ -63,7 +74,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const element = widget.el;
 
     element.onmousedown = (e) => {
-      // Only drag if isLocked is false
       if (isLocked) return;
 
       if (
@@ -96,11 +106,15 @@ document.addEventListener("DOMContentLoaded", () => {
       document.onmousemove = null;
       document.onmouseup = null;
       element.style.transition = "0.5s ease-in-out";
+
+      const topPercent = (element.offsetTop / window.innerHeight) * 100;
+      const leftPercent = (element.offsetLeft / window.innerWidth) * 100;
+
       localStorage.setItem(
         widget.id,
         JSON.stringify({
-          top: element.style.top,
-          left: element.style.left,
+          top: topPercent + "%",
+          left: leftPercent + "%",
         }),
       );
     }
@@ -114,4 +128,15 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   widgets.forEach((w) => makeDraggable(w));
+});
+// NEUTRALINO
+Neutralino.init();
+
+Neutralino.events.on("ready", async () => {
+  try {
+    const appData = await Neutralino.os.getEnv("APPDATA");
+    console.log("APPDATA:", appData);
+  } catch (err) {
+    console.error(err);
+  }
 });
