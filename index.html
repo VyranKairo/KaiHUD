@@ -11,22 +11,111 @@
             <div class="date" id="date">29 JUNE, 2026.</div>
             <div class="time" id="time">- 21:02 -</div>
         </div>
+
         <div class="todo-wrapper">
-            <div class="input-group">
-                <input
-                    type="text"
-                    id="todoInput"
-                    class="glass"
-                    placeholder="Task goes here..."
-                />
-                <button class="glass add-btn" onclick="addTask()">ADD</button>
-            </div>
-            <ul id="todoList"></ul>
+                    <div class="todo-header">UPCOMING TASKS</div>
+                    <ul id="todoList"></ul>
         </div>
-        <div id="edit-popup">Editing widgets...</div>
+
+        <div class="calendar-wrapper">
+            <div class="calendar-header">
+                <button id="prev-month" class="nav-btn">◀</button>
+                <div id="month-year" class="month-year" style="cursor: pointer;"></div>
+                <button id="next-month" class="nav-btn">▶</button>
+            </div>
+            <div id="calendar-grid" class="calendar-grid"></div>
+            <div id="year-selector" class="year-selector"></div>
+        </div>
+
+        <div id="day-task-popup" class="day-task-popup glass hidden">
+            <div class="popup-header">
+                <span id="popup-date-title">ADD TASK FOR 2 JUL</span>
+                <span class="close-popup-btn" onclick="closeDayPopup()">×</span>
+            </div>
+
+            <div class="popup-body">
+                <div class="form-group">
+                    <input type="text" id="popupTodoInput" placeholder="Task details..." />
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>START HOUR</label>
+                        <div class="custom-dropdown" id="dropdown-startHour">
+                            <div class="dropdown-trigger" onclick="toggleCustomDropdown('dropdown-startHour')">06</div>
+                            <div class="dropdown-options glass"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>MINUTE</label>
+                        <div class="custom-dropdown" id="dropdown-startMin">
+                            <div class="dropdown-trigger" onclick="toggleCustomDropdown('dropdown-startMin')">00</div>
+                            <div class="dropdown-options glass"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>AM/PM</label>
+                        <div class="custom-dropdown" id="dropdown-startAmpm">
+                            <div class="dropdown-trigger" onclick="toggleCustomDropdown('dropdown-startAmpm')">AM</div>
+                            <div class="dropdown-options glass">
+                                <div class="dropdown-item option-selected" onclick="selectCustomOption('dropdown-startAmpm', 'AM')">AM</div>
+                                <div class="dropdown-item" onclick="selectCustomOption('dropdown-startAmpm', 'PM')">PM</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>RECURRENCE</label>
+                    <div class="custom-dropdown full-width" id="dropdown-recurrence">
+                        <div class="dropdown-trigger" onclick="toggleCustomDropdown('dropdown-recurrence')">NONE</div>
+                        <div class="dropdown-options glass">
+                            <div class="dropdown-item option-selected" onclick="selectCustomOption('dropdown-recurrence', 'NONE', 'none')">NONE</div>
+                            <div class="dropdown-item" onclick="selectCustomOption('dropdown-recurrence', 'DAILY', 'daily')">DAILY</div>
+                            <div class="dropdown-item" onclick="selectCustomOption('dropdown-recurrence', 'WEEKLY', 'weekly')">WEEKLY</div>
+                            <div class="dropdown-item" onclick="selectCustomOption('dropdown-recurrence', 'MONTHLY', 'monthly')">MONTHLY</div>
+                            <div class="dropdown-item" onclick="selectCustomOption('dropdown-recurrence', 'YEARLY', 'yearly')">YEARLY</div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="glass add-btn full-width-btn" onclick="addPopupTask()">ADD TASK</button>
+            </div>
+        </div>
+
+        <div id="edit-popup">
+            <div>Editing widgets...</div>
+        </div>
+
+        <div id="custom-context-menu" class="custom-context-menu">
+            <div id="edit-mode-item" class="context-menu-item" onclick="toggleEditMode()">ENABLE EDIT</div>
+            <div class="context-menu-item" onclick="refreshHUD()">REFRESH</div>
+            <div class="context-menu-divider"></div>
+
+            <div class="context-menu-item" onclick="openResetConfirm()">RESET HUD</div>
+
+            <div class="context-menu-item" onclick="exitApp()">EXIT</div>
+        </div>
+
+        <div id="reset-confirm-popup" class="reset-confirm-popup glass hidden">
+            <div class="reset-popup-header">Reset HUD</div>
+            <div class="reset-popup-body">
+                <p>Are you sure you want to reset everything?</p>
+                <p>This action will clear all saved task data and layout modifications layout permanently.</p>
+            </div>
+            <div class="reset-popup-actions">
+                <button class="confirm-btn glass" onclick="confirmReset()">Reset</button>
+                <button class="cancel-btn glass" onclick="closeResetConfirm()">Cancel</button>
+            </div>
+        </div>
 
         <script src="js/widgets/clock.js"></script>
         <script src="js/widgets/todo.js"></script>
+        <script src="js/widgets/calendar.js"></script>
+        <script src="js/neutralino.js"></script>
         <script src="js/core/drag.js"></script>
+        <script src="js/core/menu.js"></script>
     </body>
 </html>
